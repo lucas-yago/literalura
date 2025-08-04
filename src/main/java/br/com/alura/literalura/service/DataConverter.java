@@ -9,7 +9,7 @@ public class DataConverter implements IDataConverter{
    private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public <T> T obterDados(String json, Class<T> tClass) {
+    public <T> T fromJson(String json, Class<T> tClass) {
         try{
             return mapper.readValue(json, tClass);
         }catch(JsonProcessingException e){
