@@ -64,6 +64,7 @@ public class Main {
                     showRegisteredAuthors();
                     break;
                 case 4:
+                    showAuthorsAliveInYear();
                     break;
                 case 5:
                     break;
@@ -109,5 +110,20 @@ public class Main {
             System.out.println("Nenhum Autor encontrado.");
         }
     }
+
+    private void showAuthorsAliveInYear(){
+        System.out.println("Informe o ano desejado:");
+        var year  = scanner.nextInt();
+        scanner.nextLine();
+        List<Author> authors = authorService.getAuthorsAliveInYear(year);
+
+        if (!authors.isEmpty()){
+            authors.forEach(System.out::println);
+        }{
+            System.out.println("Nenhum Autor encontrado nesse ano.");
+        }
+
+    }
+
 
 }
