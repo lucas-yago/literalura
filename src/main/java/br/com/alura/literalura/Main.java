@@ -1,18 +1,26 @@
 package br.com.alura.literalura;
 
+import br.com.alura.literalura.model.Book;
 import br.com.alura.literalura.model.Response.BookResponse;
 import br.com.alura.literalura.model.Response.BookSearchResponse;
 import br.com.alura.literalura.service.ApiClient;
+import br.com.alura.literalura.service.BookService;
 import br.com.alura.literalura.service.DataConverter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
+@Component
 public class Main {
 
     private final String url = "https://gutendex.com/books/?search=";
     private final Scanner scanner = new Scanner(System.in);
     private final ApiClient apiClient = new ApiClient();
     private final DataConverter dataConverter = new DataConverter();
+
+    @Autowired
+    private BookService service;
 
     public void  showMenu() {
         var menu = """
@@ -61,8 +69,10 @@ public class Main {
         var json = apiClient.fetchData(url+bookTitle.replace(" ", "%20"));
         BookSearchResponse bookSearchResponse =  dataConverter.fromJson(json, BookSearchResponse.class);
             if(!bookSearchResponse.results().isEmpty()){
-                BookResponse book = bookSearchResponse.results().getFirst();
+                Book book =  new Book(bookSearchResponse.results().getFirst());
+                service.saveBook(book);
                 System.out.println(book);
+
             }else{
                 System.out.println("Nenhum livro encontrado com esse nome!");
             }

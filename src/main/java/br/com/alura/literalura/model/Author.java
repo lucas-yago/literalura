@@ -1,5 +1,6 @@
 package br.com.alura.literalura.model;
 
+import br.com.alura.literalura.model.Response.AuthorResponse;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -18,6 +19,16 @@ public class Author {
 
     @OneToMany(mappedBy = "author")
     private List<Book> books;
+
+
+    public Author() {
+    }
+
+    public Author(AuthorResponse author) {
+        this.name = author.name();
+        this.birthYear = author.birthYear();
+        this.deathYear = author.deathYear();
+    }
 
     public Long getId() {
         return id;
@@ -49,5 +60,23 @@ public class Author {
 
     public void setDeathYear(Integer deathYear) {
         this.deathYear = deathYear;
+    }
+
+    private List<String> titleBooksList(){
+        return this.books.stream()
+                .map(Book::getTitle)
+                .toList();
+    }
+
+    @Override
+    public String toString() {
+        return """
+                
+                Autor: %s
+                Ano de nascimento: %s
+                Ano de falecimento: %s
+                Livros: %s
+                
+                """.formatted(this.name, this.birthYear, this.deathYear, titleBooksList().toString());
     }
 }
