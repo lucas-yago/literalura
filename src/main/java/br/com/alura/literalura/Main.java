@@ -67,6 +67,7 @@ public class Main {
                     showAuthorsAliveInYear();
                     break;
                 case 5:
+                    showBooksInLanguage();
                     break;
                 case 0:
                     System.out.println("Saindo...");
@@ -123,6 +124,26 @@ public class Main {
             System.out.println("Nenhum Autor encontrado nesse ano.");
         }
 
+    }
+
+    private void showBooksInLanguage(){
+        var menu = """
+                Insira o idioma para realizar a busca:
+                
+                es - espanhol
+                en - inglês
+                fr - francês
+                pt - português
+                """;
+        System.out.println(menu);
+        var language = scanner.nextLine();
+
+        List<Book> books = bookService.getBooksInLanguage(language);
+        if (!books.isEmpty()){
+            books.forEach(System.out::println);
+        }else {
+            System.out.println("Nenhum livro foi registrado com esse idioma");
+        }
     }
 
 }
