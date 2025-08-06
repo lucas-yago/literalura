@@ -17,9 +17,8 @@ public class Author {
     private Integer birthYear;
     private Integer deathYear;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Book> books;
-
 
     public Author() {
     }
@@ -66,6 +65,15 @@ public class Author {
         return this.books.stream()
                 .map(Book::getTitle)
                 .toList();
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Book books) {
+        books.setAuthor(this);
+        this.books.add(books);
     }
 
     @Override

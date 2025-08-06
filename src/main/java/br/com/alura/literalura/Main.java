@@ -1,9 +1,11 @@
 package br.com.alura.literalura;
 
+import br.com.alura.literalura.model.Author;
 import br.com.alura.literalura.model.Book;
 import br.com.alura.literalura.model.Response.BookResponse;
 import br.com.alura.literalura.model.Response.BookSearchResponse;
 import br.com.alura.literalura.service.ApiClient;
+import br.com.alura.literalura.service.AuthorService;
 import br.com.alura.literalura.service.BookService;
 import br.com.alura.literalura.service.DataConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,10 @@ public class Main {
     private final DataConverter dataConverter = new DataConverter();
 
     @Autowired
-    private BookService service;
+    private BookService bookService;
+
+    @Autowired
+    private AuthorService authorService;
 
     public void  showMenu() {
         var menu = """
@@ -56,6 +61,7 @@ public class Main {
                     showRegisteredBooks();
                     break;
                 case 3:
+                    showRegisteredAuthors();
                     break;
                 case 4:
                     break;
@@ -77,7 +83,7 @@ public class Main {
         BookSearchResponse bookSearchResponse =  dataConverter.fromJson(json, BookSearchResponse.class);
             if(!bookSearchResponse.results().isEmpty()){
                 Book book =  new Book(bookSearchResponse.results().getFirst());
-                service.saveBook(book);
+                bookService.saveBook(book);
                 System.out.println(book);
 
             }else{
@@ -87,7 +93,7 @@ public class Main {
     }
 
     private void showRegisteredBooks(){
-        List<Book> books =  service.getRegisteredBooks();
+        List<Book> books =  bookService.getRegisteredBooks();
         if (!books.isEmpty()){
             books.forEach(System.out::println);
         }else {
@@ -95,5 +101,13 @@ public class Main {
         }
     }
 
+    private void showRegisteredAuthors(){
+        List<Author> authors = authorService.getRegisteredAuthors();
+        if (!authors.isEmpty()){
+            authors.forEach(System.out::println);
+        }else {
+            System.out.println("Nenhum Autor encontrado.");
+        }
+    }
 
 }
