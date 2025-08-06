@@ -8,7 +8,7 @@ import br.com.alura.literalura.service.BookService;
 import br.com.alura.literalura.service.DataConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
+import java.util.List;
 import java.util.Scanner;
 
 @Component
@@ -53,6 +53,7 @@ public class Main {
                     fetchBooks();
                     break;
                 case 2:
+                    showRegisteredBooks();
                     break;
                 case 3:
                     break;
@@ -84,5 +85,15 @@ public class Main {
             }
 
     }
+
+    private void showRegisteredBooks(){
+        List<Book> books =  service.getRegisteredBooks();
+        if (!books.isEmpty()){
+            books.forEach(System.out::println);
+        }else {
+            System.out.println("Nenhum livro foi registrado ainda");
+        }
+    }
+
 
 }
