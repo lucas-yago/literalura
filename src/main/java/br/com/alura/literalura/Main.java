@@ -119,11 +119,10 @@ public class Main {
 
         if (!authors.isEmpty()){
             authors.forEach(System.out::println);
-        }{
+        }else {
             System.out.println("Nenhum Autor encontrado nesse ano.");
         }
 
     }
-
 
 }
