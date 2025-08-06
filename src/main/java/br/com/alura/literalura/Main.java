@@ -1,10 +1,18 @@
 package br.com.alura.literalura;
 
+import br.com.alura.literalura.model.Response.BookResponse;
+import br.com.alura.literalura.model.Response.BookSearchResponse;
+import br.com.alura.literalura.service.ApiClient;
+import br.com.alura.literalura.service.DataConverter;
+
 import java.util.Scanner;
 
 public class Main {
 
+    private final String url = "https://gutendex.com/books/?search=";
     private final Scanner scanner = new Scanner(System.in);
+    private final ApiClient apiClient = new ApiClient();
+    private final DataConverter dataConverter = new DataConverter();
 
     public void  showMenu() {
         var menu = """
@@ -28,6 +36,7 @@ public class Main {
 
             switch (option) {
                 case 1:
+                    fetchBooks();
                     break;
                 case 2:
                     break;
@@ -46,5 +55,18 @@ public class Main {
         }
     }
 
+    private void fetchBooks() {
+        System.out.println("Insira o nome do livro que você deseja buscar:");
+        String bookTitle = scanner.nextLine() ;
+        var json = apiClient.fetchData(url+bookTitle.replace(" ", "%20"));
+        BookSearchResponse bookSearchResponse =  dataConverter.fromJson(json, BookSearchResponse.class);
+            if(!bookSearchResponse.results().isEmpty()){
+                BookResponse book = bookSearchResponse.results().getFirst();
+                System.out.println(book);
+            }else{
+                System.out.println("Nenhum livro encontrado com esse nome!");
+            }
+
+    }
 
 }
