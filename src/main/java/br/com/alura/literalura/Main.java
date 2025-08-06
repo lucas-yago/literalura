@@ -39,8 +39,14 @@ public class Main {
         var option = 1;
         while (option != 0) {
             System.out.println(menu);
-            option = scanner.nextInt();
-            scanner.nextLine();
+            var input = scanner.nextLine();
+
+            try{
+                option = Integer.parseInt(input);
+            }catch (NumberFormatException e){
+                System.out.println("Entrada inválida! Digite um número.");
+                continue;
+            }
 
             switch (option) {
                 case 1:
